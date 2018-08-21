@@ -17,6 +17,6 @@ To run:
 
 Usage:
 
-$ python AWS_Main.py <action> <local file path> <S3 bucket> <S3 prefix>
+$ python AWS_Main.py action local/file/path S3_bucket S3_prefix
   
 See argparse help for more information on each argument.
