@@ -19,4 +19,4 @@ Usage:
 
 $ python AWS_Main.py [action] [local filepath] [S3 bucket] [S3 prefix]
   
-See argparse help for more information on each argument.
+See argparse help for more information on each of the four arguments.
