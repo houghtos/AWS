@@ -25,6 +25,7 @@ class ProgressPercentageUpload(object):
             sys.stdout.flush()
 
 #Object that obtains MD5 hash values for local and S3 file.
+#Neither SHA1 or SHA2 are supported by AWS S3 metadata 
 class MD5parse:
     def __init__(self, bucket, s3_path, local_path):
         self.bucket = bucket
