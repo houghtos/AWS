@@ -19,4 +19,9 @@ Usage:
 
   $ python AWS_Main.py [action] [local filepath] [S3 bucket] [S3 prefix]
   
-See argparse help for more information on each of the four arguments.
+###### See argparse help for more information on each of the four arguments.
+
+## Action arguments:
+1. download
+2. upload
+3. check
