@@ -5,7 +5,7 @@ Python API scripts for comparing and logging MD5 hash sums on your local directo
 Written in python 3
 Requires libraries: boto3, hashlib, argparse, and json.  Other libraries should be native to python.
 
-To run:
+## To run:
 
   1. Both files must be in the same direcory to run.  The AWS_Main.py script will import classes from AWSlib.py
 
