@@ -7,9 +7,9 @@ Requires libraries: boto3, hashlib, argparse, and json.  Other libraries should 
 
 ## To run:
 
-  1. Both files must be in the same direcory to run.  The AWS_Main.py script will import classes from AWSlib.py
+  1. Both files must be in the same direcory to run. AWS_Main.py imports class objects from AWSlib.py
 
-  2. Set variable "filename" in AWS_Main.py (line 11) to where the log output will write or append to.  Script will create the file on   first run (if filename doesn't exist) and append values once it is created.
+  2. Set variable "filename" in AWS_Main.py (line 11) to where the log output will write or append to.  Script will create output file on   first run (if it doesn't exist) and append values once created.
 
   3. In AWSlib.py under class 'MD5parse' and function 'localMD5' (line 35) you will need to set your OS system's MD5sum command.  Here it is set as default "md5sum" for the Windows Subsystem for Linux (WSL).  For mac file systems this is "md5".  You will need to ensure this is set as correct command for your OS.
 
