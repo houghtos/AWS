@@ -1,15 +1,8 @@
-# !! This is out of date!  ETAG no longer captures MD5 sum for files larger than 10MB!  Will update.
-
 # AWS-Python-API
 
-Command line Python boto3 API tool comparing and logging MD5 hash sums on your local directory with S3 files. Allows three functions: 
-1. Upload from local directory to S3 and compare MD5 values of the two files. 
-2. Download from S3 to local directory and compare MD5 values of the two files.
-3. Check MD5sum on file on your local drive with MD5sum of S3 object.  
+AWS Python boto3 API tool allowing for uploading and downloading files. 
 
-Written in python 3
-
-Required python libraries: boto3, hashlib, argparse, and json.  
+Required libraries: boto3, argparse, and json.  
 
 ## To run:
 
