@@ -1,65 +1,39 @@
-import boto3
 import boto3.s3.transfer
 from boto3.s3.transfer import S3Transfer
-import os, sys
 import argparse
-from AWSlib import ProgressPercentageUpload, MD5parse
 
-#Routine to write MD5sum sum output as TSV to designated file.
-#File location and name must be set below. 
-def writeMD5(output):
-    filename = "/home/user/person/md5sum_outputs.tsv" ###### << Set full file path here for where output log (.tsv) will be written. >> ######
-    if os.path.exists(filename):
-        append_write = 'a' 
-    else:
-        append_write = 'w' 
+# Class for tracking percent progress for uploads.  
+# This class is given as argument to the S3 transfer upload function.
+class ProgressPercentageUpload(object):
+    def __init__(self, filename):
+        self._filename = filename
+        self._size = float(os.path.getsize(filename))
+        self._seen_so_far = 0
+        self._lock = threading.Lock()
 
-    f = open(filename,append_write)
-    f.write(output + '\n')
-    f.close()
-    return()
+    def __call__(self, bytes_amount):
+        with self._lock:
+            self._seen_so_far += bytes_amount
+            percentage = (self._seen_so_far / self._size) * 100
+            sys.stdout.write(
+                "\r%s  %s / %s  (%.2f%%)" % (
+                    self._filename, self._seen_so_far, self._size,
+                    percentage))
+            sys.stdout.flush()
 
-#Uploads file to S3 bucket and then compares local and S3 MD5 hash values to ensure they match.  Results written to tsv.
+#Uploads object to S3 bucket.
 def awsUpload(bucket, local_path, s3_path):
-    transfer.upload_file(
-        local_path, 
-        bucket , 
-        s3_path,  
-        callback=ProgressPercentage(local_path)
-    )
-    
-    md5_obj = MD5parse(
-        bucket, 
-        s3_path, 
-        local_path
-    )
-    
-    local_hash = md5_obj.localMD5()
-    aws_md5 = md5_obj.awsMD5()
-    result = aws_md5 == str(local_hash)
-    output = "Object Name: " + s3_path.split('/')[-1] + "\t" + "AWS MD5 Hash: " + aws_md5 + "\t" + "Local MD5 Hash: " + str(local_hash) + "\t" + "File upload" + "\t" + "Match is " + str(result)
-    writeMD5(output)
+    try:
+        transfer.upload_file(
+            local_path, 
+            bucket , 
+            s3_path,  
+            callback=ProgressPercentage(local_path)
+        )
+    except:
+        print("Error in uploading file.  Please ensure you credentials are correctly configured, the S3 bucket is valid, and the local file path is correct.")
 
-    print("MD5sum match for: " + s3_path.split('/')[-1])
-    print(output)
-    print("Result is " + str(result))
-    return(result)
-
-#Checks if MD5 hash values match from S3 and local files.  
-def checkMD5match(bucket, local_path, s3_path):
-    md5_obj = MD5parse(bucket, s3_path, local_path)
-    local_hash = md5_obj.localMD5()
-    aws_md5 = md5_obj.awsMD5()
-    result = aws_md5 == str(local_hash)
-    output = "Object Name: " + s3_path.split('/')[-1] + "\t" + "AWS MD5 Hash: " + aws_md5 + "\t" + "Local MD5 Hash: " + str(local_hash) + "\t" + "MD5 match" + "\t" + "Match is " + str(result)
-    writeMD5(output)
-
-    print("MD5sum match for: " + s3_path.split('/')[-1])
-    print(output)
-    print("Result is " + str(result))
-    return(result)
-
-#Download file to local drive and then compares local and S3 MD5 hash values to ensure they match.  Results written to tsv.
+#Download file to local drive.
 def downloadObj(bucket, s3_path, local_path):
     try:
         transfer.download_file(
@@ -67,25 +41,6 @@ def downloadObj(bucket, s3_path, local_path):
             '{s3_path}'.format(s3_path=s3_path),
             local_path
         )
-        
-        md5_obj = MD5parse(
-            bucket, 
-            s3_path, 
-            local_path
-        )
-        
-        local_hash = md5_obj.localMD5()
-        aws_md5 = md5_obj.awsMD5()
-        
-        result = aws_md5 == str(local_hash)
-        output = "Object Name: " + s3_path.split('/')[-1] + "\t" + "AWS MD5 Hash: " + aws_md5 + "\t" + "Local MD5 Hash: " + str(local_hash) + "\t" + "File upload" + "\t" + "Match is " + str(result)
-        
-        writeMD5(output)
-
-        print("MD5sum match for: " + s3_path.split('/')[-1])
-        print(output)
-        print("Result is " + str(result))
-
     except NameError: 
         print("Name error on downloading.  Please specify correct path for object you are downloading and a proper name for saving")
         print("""Reminder: objects are saved to the directory the Python script is run from.  You cannot specify a directory such as 'home/user/download'.  This will invoke a name error.""")
@@ -95,7 +50,7 @@ if __name__ == "__main__":
     transfer = S3Transfer(
         boto3.client(
             's3',
-            'us-east-1'#,
+            'us-west-1'#,
             #aws_access_key_id = 'yourKeyHere',
             #aws_secret_access_key = 'yourSecretKeyHere'
         )
@@ -105,7 +60,7 @@ if __name__ == "__main__":
     
     parser.add_argument(
         "action", 
-        help="What action you wish to perform. Options are 'download', 'upload', or 'check'. The check action looks if your local file md5 hash matches the S3 md5 hash",
+        help="What action you wish to perform. Options are 'download' or 'upload'.
         type=str
     )
     
@@ -143,13 +98,6 @@ if __name__ == "__main__":
             args.s3_path
         )
         
-    elif args.action == 'check':
-        checkMD5match(
-            args.bucket, 
-            args.local, 
-            args.s3_path
-        )
-        
     else:
         print("Invalid action given: " + args.action)
-        print("Only actions available are 'download', 'upload', or 'check'")  
+        print("Only actions available are 'download' or 'upload'")  
