@@ -21,13 +21,11 @@ Before using, run the "configure" command before beginning uploads (see example 
 
 ## Example Usage:
 
-  `#Configure and write uploaderConfig.json
+  `#Configure and write uploaderConfig.json`
+  `$ python S3Uploader.py configure`
   
-  $ python S3Uploader.py configure
+  `#Upload MD5sum file and fileToUpload.txt`
+  `$ python S3Uploader.py su mybucket S3Prefix/ /home/users/sean/fileToUpload.txt`
   
-  #Upload MD5sum file and fileToUpload.txt
-  
-  $ python S3Uploader.py su mybucket S3Prefix/ /home/users/sean/fileToUpload.txt
-  
-  #Upload MD5sum files and all files in /home/users/sean/
-  $ python AS3Uploader.py fu mybucket S3Prefix/ /home/users/sean/`
+  `#Upload MD5sum files and all files in /home/users/sean/`
+  `$ python AS3Uploader.py fu mybucket S3Prefix/ /home/users/sean/`
