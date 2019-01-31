@@ -15,12 +15,12 @@ Will first generate a file containing the MD5sum value of the object to be uploa
 Before using, run the "configure" command before beginning uploads (see example usage).  This will prompt you for you AWS key/secret_key and region.
 
 ## Arguments:
-1. su - Use for single file upload
-2. fu - Use to upload all files in folder (folder upload.)
-3. configure - use to configure "uploaderConfig.json", a file that will contain the AWS key, secret key, and region.
+1. **su** - Use for single file upload
+2. **fu** - Use to upload all files in folder (folder upload.)
+3. **configure** - use to configure "uploaderConfig.json", a file that will contain the AWS key, secret key, and region.
 
 ## Example Usage:
-
+   
   Configure and write uploaderConfig.json:
   
   `$ python S3Uploader.py configure`
