@@ -1,21 +1,31 @@
-# AWS-Python-API
+# S3 MD5/File Uploader for python3
 
-AWS Python SDK boto3 tool for uploading and downloading objects to S3.  Uses python3.
+Uploads single file or all files in a specified directory S3 along with a calculated MD5sum.  
 
-The AWS CLI is a python program that is written using Boto3 and provides a unified interface to all AWS service APIs.  This tool allows easy integration with other software and for customization on the AWS SDK level for S3 interaction.
+Required packes:
 
-Required libraries: boto3 and argparse.  
+1. boto3
+2. hashlib
+3. io
+4. threading
 
 ## To run:
 
-In AWS_Main.py, ensure the correct AWS keys and region for accessing your S3 are entered for the boto3 client (lines 72-76).  
-
-Usage:
-
-  $ python AWS_Main.py [action] [local filepath] [S3 bucket] [S3 prefix]
+...
   
 ###### See argparse help for more information on each of the four arguments in AWS_Main.py.
 
 ## Action arguments:
-1. download
-2. upload
+1. su - Use for single upload
+2. fu - Use to upload folder (folder upload.)
+3. configure - use to configure "uploaderConfig.json", a file that will contain the AWS key, secret key, and region.
+
+## Example Usage:
+  #Configure and write uploaderConfig.json
+  $ python AWS_Main.py configure
+  
+  #Upload MD5sum file and fileToUpload.txt
+  $ python AWS_Main.py su mybucket S3Prefix/ /home/users/sean/fileToUpload.txt
+  
+  #Upload MD5sum files and all files in /home/users/sean/
+  $ python AWS_Main.py fu mybucket S3Prefix/ /home/users/sean/
