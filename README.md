@@ -1,8 +1,8 @@
 # S3 MD5/File Uploader for python3
 
-Uploads single file or all files in a specified directory S3 along with a calculated MD5sum.  
+Uploads single file or all files in a specified directory S3 along with calculated MD5sums.  
 
-Required packes:
+## Required packes:
 
 1. boto3
 2. hashlib
@@ -11,7 +11,7 @@ Required packes:
 
 ## To run:
 
-...
+See example usage.
   
 ###### See argparse help for more information on each of the four arguments in AWS_Main.py.
 
@@ -21,6 +21,7 @@ Required packes:
 3. configure - use to configure "uploaderConfig.json", a file that will contain the AWS key, secret key, and region.
 
 ## Example Usage:
+
   #Configure and write uploaderConfig.json
   
   $ python AWS_Main.py configure
