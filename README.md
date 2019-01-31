@@ -21,7 +21,7 @@ Before using, run the "configure" command before beginning uploads (see example 
 
 ## Example Usage:
 
-  #Configure and write uploaderConfig.json
+  `#Configure and write uploaderConfig.json
   
   $ python S3Uploader.py configure
   
@@ -30,5 +30,4 @@ Before using, run the "configure" command before beginning uploads (see example 
   $ python S3Uploader.py su mybucket S3Prefix/ /home/users/sean/fileToUpload.txt
   
   #Upload MD5sum files and all files in /home/users/sean/
-  
-  $ python AS3Uploader.py fu mybucket S3Prefix/ /home/users/sean/
+  $ python AS3Uploader.py fu mybucket S3Prefix/ /home/users/sean/`
