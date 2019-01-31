@@ -22,10 +22,13 @@ Required packes:
 
 ## Example Usage:
   #Configure and write uploaderConfig.json
+  
   $ python AWS_Main.py configure
   
   #Upload MD5sum file and fileToUpload.txt
+  
   $ python AWS_Main.py su mybucket S3Prefix/ /home/users/sean/fileToUpload.txt
   
   #Upload MD5sum files and all files in /home/users/sean/
+  
   $ python AWS_Main.py fu mybucket S3Prefix/ /home/users/sean/
