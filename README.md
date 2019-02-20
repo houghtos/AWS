@@ -2,7 +2,7 @@
 
 Uploads single file or all files in a specified directory S3 along with calculated MD5sums.  
 
-Will first generate a file containing the MD5sum value of the object to be uploaded (e.g. file.txt.md5). Will then Upload the MD5 file and remove it from your local machine.  Following this, will upload the desginated file which the MD5 was calculated for.   
+Generates text file containing the MD5sum value for an object (e.g. file.bam.md5).  Subsequently uploads object and text file and then removes the MD5 text file from your local machine.  Subsequently annotates the uploaded object's metadata with the MD5sum value. 
 
 ## Required Python packages:
 
