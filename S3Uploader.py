@@ -46,7 +46,7 @@ class md5sum:
         md5Value = self.fileInput + ' ' + hash_md5.hexdigest()
         f = open(md5WriteDirectory, "w")
         f.write(md5Value)
-        return (md5WriteDirectory)
+        return (md5WriteDirectory, hash_md5.hexdigest())
 
 
 #Function for uploading file to S3 using light weight boto3 client.
@@ -164,17 +164,26 @@ if __name__ == "__main__":
             try:
                 tempPath = args.fu_local + j
                 md5 = md5sum(tempPath) 
-                md5Upload = md5.md5Calc()
+                md5Return = md5.md5Calc()
+                md5Upload = md5Return[0]
+                md5Val = md5Return[1]
                 md5File = md5Upload.split('/')
                 md5File = md5File[-1]
                 awsUpload(args.fu_bucket, md5Upload, args.fu_prefix + md5File)
                 os.remove(md5Upload)
 
+                #Uploads MD5 file and specified object.
                 awsUpload(
                     args.fu_bucket, 
                     args.fu_local + j, 
                     args.fu_prefix + j
                 )
+                
+                #Add MD5 value additonally as metadata
+                s3 = boto3.resource('s3')
+                s3_object = s3.Object(args.fu_bucket, args.fu_prefix + j)
+                s3_object.metadata.update({'MD5sum':md5Val})
+                s3_object.copy_from(CopySource={'Bucket':args.fu_bucket, 'Key':args.fu_prefix + j}, Metadata=s3_object.metadata, MetadataDirective='REPLACE')
 
             except:
                 pass
