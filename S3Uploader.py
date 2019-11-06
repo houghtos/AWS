@@ -28,7 +28,7 @@ class ProgressPercentage(object):
 
 
 
-#Creates object that calculates MD5sum, writes it to the local directory wiht file name
+#Calculates MD5sum & writes it to the local directory with file name.
 #Takes local file location as input.  Outputs the local file location to the MD5sum.
 class md5sum:
     def __init__(self, local):
